@@ -27,6 +27,30 @@ export interface AgentNodeData {
 export interface OutputNodeData {
   decisions: Record<string, any>;
   analyst_signals: Record<string, any>;
+  // Portfolio overview data (optional, returned when portfolio analysis is run)
+  portfolio_overview?: {
+    portfolio_overview: {
+      account_value: number;
+      annual_return_percent: number;
+      buying_power: number;
+      cash: number;
+    };
+    holdings: Record<string, {
+      value: number;
+      pending_sell_qty?: number;
+      pending_buy_qty?: number;
+    }>;
+    trade_adjustments: Record<string, {
+      action: 'buy' | 'sell';
+      qty: number;
+      reason: string;
+    }>;
+    top_stocks_to_buy: Record<string, {
+      name: string;
+      price: number;
+      shares_to_buy: number;
+    }>;
+  };
   // Backtest-specific fields
   performance_metrics?: {
     sharpe_ratio?: number;

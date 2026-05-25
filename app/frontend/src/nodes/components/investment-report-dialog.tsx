@@ -18,6 +18,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Table,
   TableBody,
@@ -29,6 +30,7 @@ import {
 import { extractBaseAgentKey } from '@/data/node-mappings';
 import { createAgentDisplayNames } from '@/utils/text-utils';
 import { ArrowDown, ArrowUp, Minus } from 'lucide-react';
+import { PortfolioDashboard } from './portfolio-dashboard';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
@@ -106,6 +108,7 @@ export function InvestmentReportDialog({
     );
 
   const agentDisplayNames = createAgentDisplayNames(agents);
+  const hasPortfolioData = !!outputNodeData.portfolio_overview;
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
@@ -114,6 +117,21 @@ export function InvestmentReportDialog({
           <DialogTitle className="text-xl font-bold">Investment Report</DialogTitle>
         </DialogHeader>
 
+        <Tabs defaultValue={hasPortfolioData ? 'portfolio' : 'analysis'} className="mt-2">
+          <TabsList>
+            {hasPortfolioData && (
+              <TabsTrigger value="portfolio">Portfolio Dashboard</TabsTrigger>
+            )}
+            <TabsTrigger value="analysis">Analysis</TabsTrigger>
+          </TabsList>
+
+          {hasPortfolioData && (
+            <TabsContent value="portfolio" className="mt-4">
+              <PortfolioDashboard data={outputNodeData.portfolio_overview} />
+            </TabsContent>
+          )}
+
+          <TabsContent value="analysis">
         <div className="space-y-8 my-4">
           {/* Summary Section */}
           <section>
@@ -231,6 +249,8 @@ export function InvestmentReportDialog({
             </Accordion>
           </section>
         </div>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
