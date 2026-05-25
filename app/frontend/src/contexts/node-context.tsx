@@ -43,6 +43,28 @@ export interface OutputNodeData {
     positions: Record<string, any>;
   };
   total_days?: number;
+  // Portfolio dashboard fields
+  portfolio_overview?: {
+    account_value: number;
+    annual_return_percent: number;
+    buying_power: number;
+    cash: number;
+  };
+  holdings?: Record<string, {
+    value: number;
+    pending_sell_qty?: number;
+    pending_buy_qty?: number;
+  }>;
+  trade_adjustments?: Record<string, {
+    action: 'buy' | 'sell';
+    qty: number;
+    reason: string;
+  }>;
+  top_stocks_to_buy?: Record<string, {
+    name: string;
+    price: number;
+    shares_to_buy: number;
+  }>;
 }
 
 // Default agent node state
